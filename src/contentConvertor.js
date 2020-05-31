@@ -59,14 +59,18 @@ function contentConvertor(data, isPost) {
                 // Handle error
             } else {
                 // Parsing completed, do something
-                console.log(dom);
+                if (process.env.DEBUG) {
+                    console.log(dom);
+                }
                 let subli = sublime({
                     name: 'main',
                     type: 'main',
                     children: dom
                 })
                 content = subli
-                console.log(subli);
+                if (process.env.DEBUG) {
+                    console.log(subli);
+                }
             }
         });
 
