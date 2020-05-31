@@ -12,7 +12,13 @@ async function updateCache(asyncCallback) {
     console.log("Updating cache called..")
     cached_at = new Date()
 
-    setCacheTo(await asyncCallback())
+    // TODO: it doesn't like it if catch is not here. javascript doesn't like propagating errors from lambda parameters
+    const result = await asyncCallback().catch(console.error)
+    if (result == undefined) {
+        setCacheTo("{}")
+        return
+    }
+    setCacheTo(result)
 }
 
 async function checkCache(asyncCallback) {
@@ -29,11 +35,7 @@ async function checkCache(asyncCallback) {
 }
 
 async function getLatest(asyncCallback) {
-    try {
-        await checkCache(asyncCallback)
-    } catch {
-
-    }
+    await checkCache(asyncCallback)
     return cache
 }
 
