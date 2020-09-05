@@ -2,7 +2,7 @@ import http from 'http'
 
 import path from 'path'
 require('dotenv').config({
-    path: path.resolve(__dirname, '..', '.env' + (process.env.DEBUG ? ".dev" : ""))
+    path: path.resolve(__dirname, '..', '.env')
 })
 
 import generateOutput from './outputGenerator'

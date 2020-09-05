@@ -81,14 +81,16 @@ function contentConvertor(data, isPost) {
 
         return {
             //title: htmlToText.fromString(post.title.rendered),
-            title: decodeURIComponent(post.title.rendered),
+            //title: decodeURIComponent(post.title.rendered),
             title: entities.decode(post.title.rendered),
             html: post.content.rendered,
             json: content,
             slug: post.slug,
             thumbnails: thumbnails,
             created_at: post.date_gmt,
-            isPost: isPost
+            isPost: isPost,
+            excerpt: post.excerpt.rendered,
+            link: entities.decode(post.link)
         }
     })
     //content.rendered
