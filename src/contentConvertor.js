@@ -60,7 +60,7 @@ function contentConvertor(data, isPost) {
             } else {
                 // Parsing completed, do something
                 if (process.env.DEBUG) {
-                    console.log(dom);
+                    //console.log(dom);
                 }
                 let subli = sublime({
                     name: 'main',
@@ -69,7 +69,7 @@ function contentConvertor(data, isPost) {
                 })
                 content = subli
                 if (process.env.DEBUG) {
-                    console.log(subli);
+                    //console.log(subli);
                 }
             }
         });
@@ -78,11 +78,25 @@ function contentConvertor(data, isPost) {
         parser.write(rawHtml);
         parser.end();
 
+        let title = entities.decode(post.title.rendered);
+
+        let tags = []
+
+        if (title.indexOf("#") != 0) {
+            let hashtags = title.split("#")
+            console.log(hashtags)
+
+            for(let i = 1; i < hashtags.length; i++) {
+                tags.push(hashtags[i].trim())
+            }
+
+            title = hashtags[0].trim()
+        }
 
         return {
             //title: htmlToText.fromString(post.title.rendered),
             //title: decodeURIComponent(post.title.rendered),
-            title: entities.decode(post.title.rendered),
+            title,
             html: post.content.rendered,
             json: content,
             slug: post.slug,
@@ -90,7 +104,8 @@ function contentConvertor(data, isPost) {
             created_at: post.date_gmt,
             isPost: isPost,
             excerpt: post.excerpt.rendered,
-            link: entities.decode(post.link)
+            link: entities.decode(post.link),
+            tags
         }
     })
     //content.rendered
