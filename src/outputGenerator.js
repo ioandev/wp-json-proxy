@@ -17,11 +17,17 @@ async function fetchWordpressContent() {
     if (hostname == undefined) {
         throw "hostname env variable could not be found"
     }
-    
+
+    let hostnameConversations = process.env.HOSTNAME_CONVERSATIONS
+    if (hostnameConversations == undefined) {
+        throw "hostname conversations env variable could not be found"
+    }
+
     return {
         posts: await fetch(`${hostname}/wp-json/wp/v2/posts?page=1&per_page=100&_embed=1`),
         pages: await fetch(`${hostname}/wp-json/wp/v2/pages?page=1&per_page=100&_embed=1`),
         popularPosts: await fetch(`${hostname}/wp-json/wordpress-popular-posts/v1/popular-posts?post_type=post&limit=30&range=all`),
+        conversations: await fetch(`${hostnameConversations}/Pipeline`)
     }
 }
 
@@ -35,7 +41,8 @@ async function generateOutput() {
 
     return {
         posts: simpliedPostAndPages,
-        popularPosts: simplifiedPopularPosts
+        popularPosts: simplifiedPopularPosts,
+        conversations: output.conversations
     }
 }
 
