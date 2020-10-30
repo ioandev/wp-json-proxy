@@ -4,7 +4,7 @@
   "description": "cache for wp-json",
   "main": "main.js",
   "scripts": {
-    "dev": "cross-env DEBUG=true babel-node ./src/main.js",
+    "dev": "nodemon ./src/main.js --exec babel-node",
     "prod": "babel-node ./src/main.js"
   },
   "repository": {
@@ -25,16 +25,20 @@
   "homepage": "https://github.com/ioanb7/wp-json-proxy#readme",
   "dependencies": {
     "axios": "^0.19.2",
+    "body-parser": "^1.19.0",
     "cheerio": "^1.0.0-rc.3",
+    "cors": "^2.8.5",
     "domhandler": "^3.0.0",
     "dotenv": "^8.2.0",
+    "express": "^4.17.1",
     "html-entities": "^1.3.1",
-    "html-to-text": "^5.1.1"
+    "html-to-text": "^5.1.1",
+    "nodemon": "^2.0.6"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.6",
-    "@babel/node": "^7.8.7",
-    "@babel/preset-env": "^7.9.6"
+    "@babel/core": "^7.12.3",
+    "@babel/node": "^7.12.1",
+    "@babel/preset-env": "^7.12.1"
   }
 }

@@ -2,47 +2,54 @@ import popularPostsConvertor from './popularPostsConvertor'
 import contentConvertor from './contentConvertor'
 var axios = require('axios')
 axios.defaults.timeout = 1000
+import { config, websites } from '../config'
 
 // Note: this name might cause issues
 async function fetch(url) {
     try {
         return (await axios(url)).data
     } catch (ex) {
-        throw `An error has occured when trying to fetch URL ${url}: ${ex}`
+        //throw `An error has occured when trying to fetch URL ${url}: ${ex}`
+        return []
     }
 }
 
-async function fetchWordpressContent() {
-    let hostname = process.env.HOSTNAME
+async function fetchWordpressContent(website) {
+    let configThis = config(website)
+
+    let hostname = configThis.hostname
     if (hostname == undefined) {
         throw "hostname env variable could not be found"
     }
 
-    let hostnameConversations = process.env.HOSTNAME_CONVERSATIONS
+    let result = {}
+
+    let hostnameConversations = configThis.hostnameConversations
     if (hostnameConversations == undefined) {
-        throw "hostname conversations env variable could not be found"
+        result.conversations = await fetch(`${hostnameConversations}/Pipeline`)
     }
 
-    return {
+    return Object.assign({}, result, {
         posts: await fetch(`${hostname}/wp-json/wp/v2/posts?page=1&per_page=100&_embed=1`),
         pages: await fetch(`${hostname}/wp-json/wp/v2/pages?page=1&per_page=100&_embed=1`),
         popularPosts: await fetch(`${hostname}/wp-json/wordpress-popular-posts/v1/popular-posts?post_type=post&limit=30&range=all`),
-        conversations: await fetch(`${hostnameConversations}/Pipeline`)
-    }
+    })
 }
 
-async function generateOutput() {
-    let output = await fetchWordpressContent()
-    let simplifiedPosts = contentConvertor(output.posts, true)
-    let simplifiedPages = contentConvertor(output.pages, false)
-    let simplifiedPopularPosts = popularPostsConvertor(output.popularPosts)
+function generateOutput(website) {
+    return async function () {
+        let output = await fetchWordpressContent(website)
+        let simplifiedPosts = contentConvertor(output.posts, true)
+        let simplifiedPages = contentConvertor(output.pages, false)
+        let simplifiedPopularPosts = popularPostsConvertor(output.popularPosts)
 
-    let simpliedPostAndPages = simplifiedPosts.concat(simplifiedPages)
+        let simpliedPostAndPages = simplifiedPosts.concat(simplifiedPages)
 
-    return {
-        posts: simpliedPostAndPages,
-        popularPosts: simplifiedPopularPosts,
-        conversations: output.conversations
+        return {
+            posts: simpliedPostAndPages,
+            popularPosts: simplifiedPopularPosts,
+            conversations: output.conversations
+        }
     }
 }
 
