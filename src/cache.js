@@ -1,4 +1,4 @@
-var maxDifferenceInSecondsForCacheToBeStale = 10
+var maxDifferenceInSecondsForCacheToBeStale = 60
 var cache = null
 var cached_at = null
 
