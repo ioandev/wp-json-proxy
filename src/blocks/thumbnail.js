@@ -7,23 +7,33 @@ let urlAndSize = function (data) {
     }
 }
 
+let getLargestFromDetails = (details) => {
+    if (details.full != null) {
+        return details.full
+    }
+    if (details.medium_large != null) {
+        return details.medium_large
+    }
+    if (details.medium != null) {
+        return details.medium
+    }
+    if (details.thumbnail != null) {
+        return details.thumbnail
+    }
+
+    return null
+}
+
 export function getLargest(thumbnails) {
     if (!thumbnails.length) {
         return null;
     }
     const thumbnail = thumbnails[0]
+    const details = thumbnail.details
     //for (const thumbnail of thumbnails) {
-        if (thumbnail.details.full != null) {
-            return thumbnail.details.full
-        }
-        if (thumbnail.details.medium_large != null) {
-            return thumbnail.details.medium_large
-        }
-        if (thumbnail.details.medium != null) {
-            return thumbnail.details.medium
-        }
-        if (thumbnail.details.thumbnail != null) {
-            return thumbnail.details.thumbnail
+        let largest = getLargestFromDetails(details)
+        if (largest != null) {
+            return largest
         }
     //}
     return null
@@ -43,12 +53,17 @@ export default function extractThumbnails(featuredMedia, post) {
                     medium_large: urlAndSize(sizes.medium_large),
                     full: urlAndSize(sizes.full)
                 };
+                details.always = getLargestFromDetails(details)
             } else {
                 details = {
                     thumbnail: null,
                     medium: null,
                     medium_large: null,
                     full: {
+                        url: media.source_url,
+                        width: media_details.width,
+                    },
+                    always: {
                         url: media.source_url,
                         width: media_details.width,
                     }

@@ -7,6 +7,7 @@ const {
 } = require("htmlparser2");
 const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
+const htmlToText = require('html-to-text');
 
 import { getLargest } from './thumbnail'
 import slugify from '../helpers/slugify'
@@ -70,8 +71,8 @@ function postProcess(parent, options, post) {
     return result
 }
 
-export default function extractContent(rawHtml, options, post) {
-    let result = "";
+export function extractContentAsJson(rawHtml, options, post) {
+    let json = "";
 
     const handler = new DomHandler(function (error, dom) {
         if (error) {
@@ -81,7 +82,7 @@ export default function extractContent(rawHtml, options, post) {
             if (process.env.DEBUG) {
                 //console.log(dom);
             }
-            result = postProcess({
+            json = postProcess({
                 name: 'main',
                 type: 'main',
                 children: dom
@@ -95,5 +96,10 @@ export default function extractContent(rawHtml, options, post) {
     const parser = new Parser(handler);
     parser.write(rawHtml);
     parser.end();
-    return result;
+    return json;
+}
+
+export function extractContentAsText(rawHtml) {
+    let text = htmlToText.fromString(rawHtml);
+    return text;
 }

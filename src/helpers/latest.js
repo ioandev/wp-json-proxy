@@ -11,7 +11,8 @@ function updateCacheCallbackAsyncGenerator(website) {
         let contentOptions = configForWebsite.contentOptions
         let metaOptions = configForWebsite.metaOptions
         let authorNameLinkMappings = configForWebsite.authorNameLinkMappings
-        return extractBlog(output, contentOptions, metaOptions, authorNameLinkMappings)
+        let baseUrl = configForWebsite.baseUrl
+        return extractBlog(output, contentOptions, metaOptions, authorNameLinkMappings, baseUrl)
     }
 }
 

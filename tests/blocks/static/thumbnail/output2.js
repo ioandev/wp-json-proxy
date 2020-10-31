@@ -10,6 +10,10 @@ export const featuredMedia =
         full: {
           url: 'https://blog-internal.nextview.dev/wp-content/uploads/2020/10/image.png',
           width: 2133
+        },
+        always: {
+          url: 'https://blog-internal.nextview.dev/wp-content/uploads/2020/10/image.png',
+          width: 2133
         }
       }
     }

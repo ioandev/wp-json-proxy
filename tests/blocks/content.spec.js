@@ -1,11 +1,11 @@
 
-import { extractContent } from "~/src/blocks"
+import { extractContentAsJson, extractContentAsText } from "~/src/blocks"
 
-describe('content block', () => {
+describe('content as json block', () => {
     it('works as before', () => {
         const inputHtml = "\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<h2>1. Some title here</h2>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n"
 
-        const actual = extractContent(inputHtml, {
+        const actual = extractContentAsJson(inputHtml, {
             addThumbnailBeforeFirstTitle: false
         })
         expect(actual).toEqual({
@@ -35,7 +35,7 @@ describe('content block', () => {
     it('works as before with image', () => {
         const inputHtml = "\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<img src=\"https://images.com/image.jpg\" alt=\"some image\"/>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<h2>1. Some title here</h2>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n"
 
-        const actual = extractContent(inputHtml, {
+        const actual = extractContentAsJson(inputHtml, {
             addThumbnailBeforeFirstTitle: false
         })
         expect(actual).toEqual({
@@ -74,7 +74,7 @@ describe('content block', () => {
     it('addThumbnailBeforeFirstTitle option', () => {
         const inputHtml = "\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<h2>1. Some title here</h2>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p><h2>2. Another title</h2>\n"
 
-        const actual = extractContent(
+        const actual = extractContentAsJson(
             inputHtml,
             {
                 addThumbnailBeforeFirstTitle: true,
@@ -139,5 +139,14 @@ describe('content block', () => {
                 },
             ]
         })
+    })
+})
+
+describe('content as txt block', () => {
+    it('works as before', () => {
+        const inputHtml = "\n<p>Welcome to WordPress. This is your first post.</p><h2>Hi</h2><p>testing.</p><p>And another line</p>\n"
+
+        const actual = extractContentAsText(inputHtml)
+        expect(actual).toEqual("Welcome to WordPress. This is your first post.\n\nHI\ntesting.\n\nAnd another line")
     })
 })

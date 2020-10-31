@@ -11,13 +11,15 @@ export function config(website) {
                 "admin": "https://ioan.blog/",
                 "ioanbiticu": "https://ioan.blog/"
             },
-            metaOptions: ["excerpt_small", "for", "subtitle"]
+            metaOptions: ["excerpt_small", "for", "subtitle", "alt_headline", "keywords"],
+            baseUrl: "https://nextview.dev/blog"
         }
     }
     if (website == "ioanblog") {
         return {
             hostname: "https://ioan.blog",
-            hostnameConversations: "http://localhost:54440"
+            hostnameConversations: "http://localhost:54440",
+            baseUrl: "https://ioan.blog"
         }
     }
     throw {

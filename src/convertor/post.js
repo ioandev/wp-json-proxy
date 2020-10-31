@@ -1,6 +1,7 @@
-import { extractTitle, extractThumbnails, extractContent, extractLink, extractAuthors, extractMeta, extractReadingTime } from '../blocks'
+import { extractTitle, extractThumbnails, extractContentAsJson, extractContentAsText , extractLink, extractAuthors, extractMeta, extractReadingTime, extractExcerpt, extractDates } from '../blocks'
+var wordcount = require('wordcount');
 
-export default function extractPost(post, isPost, contentOptions, metaOptions, authorNameLinkMappings) {
+export default function extractPost(post, isPost, contentOptions, metaOptions, authorNameLinkMappings, baseUrl) {
     var featuredMedia = post._embedded['wp:featuredmedia'];
     var authors = post._embedded['author'];
 
@@ -20,22 +21,29 @@ export default function extractPost(post, isPost, contentOptions, metaOptions, a
         meta = extractMeta(post, metaOptions)
     }
 
+    let excerpts = extractExcerpt(post.excerpt)
+    let dates = extractDates(post.date_gmt)
+
     let readingTime = extractReadingTime(post.content.rendered)
+
     let result = {
         title,
         html: post.content.rendered,
         slug: post.slug,
         thumbnails: thumbnails,
-        created_at: post.date_gmt,
         isPost: isPost,
         excerpt: post.excerpt.rendered,
-        link: extractLink(post.link),
+        link: baseUrl + "/" + post.slug,
+        link_regular: extractLink(post.link),
         authors: extractAuthors(authors, authorNameLinkMappings),
         tags,
         meta,
-        reading_time: readingTime
+        reading_time: readingTime,
     };
-    result.json = extractContent(post.content.rendered, contentOptions, result);
+    result.json = extractContentAsJson(post.content.rendered, contentOptions, result);
+    result.txt = extractContentAsText(post.content.rendered);
+    result.word_count = wordcount(result.txt.replace("\n", ""))
 
+    result = {...result, ...excerpts, ...dates}
     return result
 }

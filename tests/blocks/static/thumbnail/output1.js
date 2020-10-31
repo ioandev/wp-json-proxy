@@ -19,7 +19,11 @@ export const featuredMedia =
         full: {
           url: 'https://ioan.blog/wp-content/uploads/2020/06/whyvue.png',
           width: 1022
-        }
+        },
+        always: {
+          url: 'https://ioan.blog/wp-content/uploads/2020/06/whyvue.png',
+          width: 1022
+        },
       }
     }
   ]
