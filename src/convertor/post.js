@@ -1,7 +1,8 @@
-import { extractTitle, extractThumbnails, extractContent, extractLink } from '../blocks'
+import { extractTitle, extractThumbnails, extractContent, extractLink, extractAuthors } from '../blocks'
 
 export default function extractPost(post, isPost, contentOptions) {
     var featuredMedia = post._embedded['wp:featuredmedia'];
+    var authors = post._embedded['author'];
 
     let thumbnails = [];
     if (featuredMedia) {
@@ -24,6 +25,7 @@ export default function extractPost(post, isPost, contentOptions) {
         isPost: isPost,
         excerpt: post.excerpt.rendered,
         link: extractLink(post.link),
+        authors: extractAuthors(authors),
         tags
     };
     result.json = extractContent(post.content.rendered, contentOptions, result);
