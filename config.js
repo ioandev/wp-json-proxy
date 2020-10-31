@@ -3,7 +3,10 @@ export const websites = ["nextview", "ioanblog"]
 export function config(website) {
     if (website == "nextview") {
         return {
-            hostname: "https://ioan.blog",
+            hostname: "https://blog-internal.nextview.dev",
+            contentOptions: {
+                addThumbnailBeforeFirstTitle: true
+            }
         }
     }
     if (website == "ioanblog") {
