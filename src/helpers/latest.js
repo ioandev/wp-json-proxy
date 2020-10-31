@@ -8,7 +8,8 @@ function updateCacheCallbackAsyncGenerator(website) {
     return async function () {
         let output = await fetchBlog(website)
         let contentOptions = config(website).contentOptions
-        return extractBlog(output, contentOptions)
+        let metaOptions = config(website).metaOptions
+        return extractBlog(output, contentOptions, metaOptions)
     }
 }
 

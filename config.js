@@ -6,7 +6,8 @@ export function config(website) {
             hostname: "https://blog-internal.nextview.dev",
             contentOptions: {
                 addThumbnailBeforeFirstTitle: true
-            }
+            },
+            metaOptions: ["excerpt_small", "for", "subtitle"]
         }
     }
     if (website == "ioanblog") {
