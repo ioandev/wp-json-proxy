@@ -7,6 +7,10 @@ export function config(website) {
             contentOptions: {
                 addThumbnailBeforeFirstTitle: true
             },
+            authorNameLinkMappings: {
+                "admin": "https://ioan.blog/",
+                "ioanbiticu": "https://ioan.blog/"
+            },
             metaOptions: ["excerpt_small", "for", "subtitle"]
         }
     }

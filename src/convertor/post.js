@@ -1,6 +1,6 @@
-import { extractTitle, extractThumbnails, extractContent, extractLink, extractAuthors, extractMeta } from '../blocks'
+import { extractTitle, extractThumbnails, extractContent, extractLink, extractAuthors, extractMeta, extractReadingTime } from '../blocks'
 
-export default function extractPost(post, isPost, contentOptions, metaOptions) {
+export default function extractPost(post, isPost, contentOptions, metaOptions, authorNameLinkMappings) {
     var featuredMedia = post._embedded['wp:featuredmedia'];
     var authors = post._embedded['author'];
 
@@ -19,7 +19,8 @@ export default function extractPost(post, isPost, contentOptions, metaOptions) {
     if (metaOptions !== undefined) {
         meta = extractMeta(post, metaOptions)
     }
-    
+
+    let readingTime = extractReadingTime(post.content.rendered)
     let result = {
         title,
         html: post.content.rendered,
@@ -29,9 +30,10 @@ export default function extractPost(post, isPost, contentOptions, metaOptions) {
         isPost: isPost,
         excerpt: post.excerpt.rendered,
         link: extractLink(post.link),
-        authors: extractAuthors(authors),
+        authors: extractAuthors(authors, authorNameLinkMappings),
         tags,
-        meta
+        meta,
+        reading_time: readingTime
     };
     result.json = extractContent(post.content.rendered, contentOptions, result);
 

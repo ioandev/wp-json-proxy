@@ -7,9 +7,11 @@ import { config } from '../../config'
 function updateCacheCallbackAsyncGenerator(website) {
     return async function () {
         let output = await fetchBlog(website)
-        let contentOptions = config(website).contentOptions
-        let metaOptions = config(website).metaOptions
-        return extractBlog(output, contentOptions, metaOptions)
+        let configForWebsite = config(website)
+        let contentOptions = configForWebsite.contentOptions
+        let metaOptions = configForWebsite.metaOptions
+        let authorNameLinkMappings = configForWebsite.authorNameLinkMappings
+        return extractBlog(output, contentOptions, metaOptions, authorNameLinkMappings)
     }
 }
 

@@ -9,6 +9,7 @@ const Entities = require('html-entities').AllHtmlEntities;
 const entities = new Entities();
 
 import { getLargest } from './thumbnail'
+import slugify from '../helpers/slugify'
 
 function postProcess(parent, options, post) {
     if (parent.data == undefined && parent.name == undefined)
@@ -19,12 +20,11 @@ function postProcess(parent, options, post) {
 
     var children = []
     if (parent.children != undefined) {
-
-        parent.children.forEach(child => {
+        let didInsertThumbnailBeforeH2 = false
+        for (const child of parent.children) {
             if (child.name == 'h2') {
                 let largest = post && getLargest(post.thumbnails)
-                if (options && options.addThumbnailBeforeFirstTitle && largest) {
-                    debugger
+                if (options && options.addThumbnailBeforeFirstTitle && largest && !didInsertThumbnailBeforeH2) {
                     children.push({
                         name: 'img',
                         attribs: {
@@ -32,11 +32,12 @@ function postProcess(parent, options, post) {
                             alt: post.thumbnails[0].alt_text
                         }
                     })
+                    didInsertThumbnailBeforeH2 = true
                 }
             }
-
+            
             children.push(postProcess(child, options, post))
-        });
+        }
     }
     if (parent.type == "tag" && parent.children != undefined && parent.children.length == 1 && parent.children[0].type != "tag") {
         children = []
@@ -56,8 +57,14 @@ function postProcess(parent, options, post) {
     if (children.length != 0) {
         result.children = children
     }
+
     if (parent.attribs != undefined && Object.keys(parent.attribs).length != 0) {
         result.attribs = parent.attribs
+    }
+
+    if (result.name == "h2") {
+        let slug = slugify(result.data);
+        result.attribs = {id: slug, ...result.attribs}
     }
 
     return result

@@ -20,7 +20,7 @@ describe('content block', () => {
                     name: 'p',
                     data: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!'
                 },
-                { name: 'h2', data: '1. Some title here' },
+                { name: 'h2', data: '1. Some title here', attribs: {id: 'some-title-here'} },
                 {
                     name: 'p',
                     data: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!'
@@ -48,6 +48,7 @@ describe('content block', () => {
                 },
                 {
                     name: 'img',
+                    data: undefined,
                     attribs: {
                         src: 'https://images.com/image.jpg',
                         alt: "some image"
@@ -57,7 +58,7 @@ describe('content block', () => {
                     name: 'p',
                     data: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!'
                 },
-                { name: 'h2', data: '1. Some title here' },
+                { name: 'h2', data: '1. Some title here', attribs: {id: 'some-title-here'} },
                 {
                     name: 'p',
                     data: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!'
@@ -71,7 +72,7 @@ describe('content block', () => {
     })
 
     it('addThumbnailBeforeFirstTitle option', () => {
-        const inputHtml = "\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<h2>1. Some title here</h2>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n"
+        const inputHtml = "\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p>\n\n\n\n<h2>1. Some title here</h2>\n\n\n\n<p>Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!</p><h2>2. Another title</h2>\n"
 
         const actual = extractContent(
             inputHtml,
@@ -118,10 +119,23 @@ describe('content block', () => {
                         alt: "Vue popularity"
                     }
                 },
-                { name: 'h2', data: '1. Some title here' },
+                {
+                    name: 'h2',
+                    data: '1. Some title here',
+                    attribs: {
+                        id: 'some-title-here',
+                    }
+                },
                 {
                     name: 'p',
                     data: 'Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing! Welcome to WordPress. This is your first post. Edit or delete it, then start writing!'
+                },
+                {
+                    name: 'h2',
+                    data: '2. Another title',
+                    attribs: {
+                        id: 'another-title',
+                    }
                 },
             ]
         })
