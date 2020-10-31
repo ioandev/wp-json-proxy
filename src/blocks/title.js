@@ -1,9 +1,7 @@
-
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
+import decoder from '~/src/helpers/decoder'
 
 export default function extractTitle(post) {
-    let title = entities.decode(post.title.rendered);
+    let title = decoder(post.title.rendered);
 
     let tags = [];
 

@@ -5,8 +5,7 @@ const {
 const {
     Parser
 } = require("htmlparser2");
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
+import decoder from '~/src/helpers/decoder'
 const htmlToText = require('html-to-text');
 
 import { getLargest } from './thumbnail'
@@ -50,7 +49,7 @@ function postProcess(parent, options, post) {
         data: parent.data
     }
     if (result.data != undefined) {
-        result.data = entities.decode(result.data)
+        result.data = decoder(result.data)
     }
 
     children = children.filter(child => child != null)

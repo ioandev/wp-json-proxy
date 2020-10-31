@@ -4,6 +4,6 @@ import { estimatedReadingTime, TextFormat, Options } from 'estimated-reading-tim
 
 export default function extractReadingTime(htmlText) {
 
-  const res = estimatedReadingTime(htmlText, TextFormat.HTML, { isTechnical: false } );
-    return res.roundedMinutes
+  const res = estimatedReadingTime(htmlText, TextFormat.HTML, { isTechnical: true } );
+  return res.roundedMinutes + 1 // 1 for the title, and subtitle, contents, etc.
 }

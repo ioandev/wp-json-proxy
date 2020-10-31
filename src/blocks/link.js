@@ -1,6 +1,6 @@
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
+
+import decoder from '~/src/helpers/decoder'
 
 export default function extractLink(link) {
-    return entities.decode(link)
+    return decoder(link)
 }

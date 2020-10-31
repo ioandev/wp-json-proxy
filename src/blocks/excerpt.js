@@ -1,13 +1,11 @@
-const Entities = require('html-entities').AllHtmlEntities;
-const entities = new Entities();
+import decoder from '~/src/helpers/decoder'
 const htmlToText = require('html-to-text');
 
 export default function extractExcerpt(excerpt) {
     const html = excerpt.rendered
     const txt = 
         htmlToText.fromString(
-            entities
-            .decode(html))
+            decoder(html))
     
     return {
         "excerpt_html": html,
