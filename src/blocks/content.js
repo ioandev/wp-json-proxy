@@ -67,6 +67,14 @@ function postProcess(parent, options, post) {
         result.attribs = {id: slug, ...result.attribs}
     }
 
+    if (result.attribs && 'src' in result.attribs) {
+        if (options && options.hostname) {
+            let hostname = options.hostname
+            let baseUrl = options.baseUrl
+            result.attribs['src'] = result.attribs['src'].replace(hostname, baseUrl)
+        }
+    }
+
     return result
 }
 

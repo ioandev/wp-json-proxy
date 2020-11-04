@@ -17,4 +17,15 @@ describe('thumbnail block', () => {
         const actual = extractThumbnails(input)
         expect(actual).toEqual(output)
     })
+
+    it('replaces previous base url', () => {
+        const input = require('./static/thumbnail/input3').featuredMedia
+        const output = require('./static/thumbnail/output3').featuredMedia
+
+        const actual = extractThumbnails(input, {
+            hostname: "https://blog-internal.nextview.dev",
+            baseUrl: "https://nextview.dev/blog"
+        })
+        expect(actual).toEqual(output)
+    })
 })

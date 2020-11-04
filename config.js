@@ -1,8 +1,9 @@
 export const websites = ["nextview", "ioanblog"]
 
 export function config(website) {
+    let result = {}
     if (website == "nextview") {
-        return {
+        result = {
             hostname: "https://blog-internal.nextview.dev",
             contentOptions: {
                 addThumbnailBeforeFirstTitle: true
@@ -12,17 +13,30 @@ export function config(website) {
                 "ioanbiticu": "https://ioan.blog/"
             },
             metaOptions: ["excerpt_small", "for", "subtitle", "alt_headline", "keywords"],
-            baseUrl: "https://nextview.dev/blog"
+            baseUrl: "http://local-nginx/blog"
         }
     }
     if (website == "ioanblog") {
-        return {
+        result = {
             hostname: "https://ioan.blog",
             hostnameConversations: "http://localhost:54440",
             baseUrl: "https://ioan.blog"
         }
     }
-    throw {
-        "error": `Website ${website} not found.`
+
+    if(Object.keys(result).length == 0) {
+        throw {
+            "error": `Website ${website} not found.`
+        }
     }
+
+    let hostnameAndBaseUrlPack = {
+        hostname: result.hostname,
+        baseUrl: result.baseUrl
+    };
+
+    result.thumbnailOptions = {...hostnameAndBaseUrlPack}
+    result.contentOptions = {...result.contentOptions, ...hostnameAndBaseUrlPack}
+
+    return result;
 }

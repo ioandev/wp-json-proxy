@@ -15,7 +15,7 @@ async function fetchAndAdd(result, website, id, url) {
     try {
         result[id] = await fetch(url)
     } catch (ex) {
-        console.error(`An error has occured when fetching resource ${id} for website {website}: ${ex}`)
+        console.error(`An error has occured when fetching resource ${id} for website ${website}: ${ex}`)
         result[id] = []
     }
 }

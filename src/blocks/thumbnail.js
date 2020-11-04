@@ -1,8 +1,16 @@
-let urlAndSize = function (data) {
+let urlAndSize = function (data, thumbnailOptions) {
+    let hostname = ""
+    let baseUrl = ""
+    if (thumbnailOptions) {
+        hostname = thumbnailOptions.hostname 
+        baseUrl = thumbnailOptions.baseUrl
+    }
     if (data == null)
         return null
+
+    let url = data.source_url.replace(hostname, baseUrl)
     return {
-        url: data.source_url,
+        url,
         width: data.width
     }
 }
@@ -39,7 +47,9 @@ export function getLargest(thumbnails) {
     return null
 }
 
-export default function extractThumbnails(featuredMedia, post) {
+export default function extractThumbnails(featuredMedia, thumbnailOptions) {
+
+
     let result = featuredMedia.map(media => {
         try {
             let media_details = media.media_details
@@ -59,14 +69,14 @@ export default function extractThumbnails(featuredMedia, post) {
                     thumbnail: null,
                     medium: null,
                     medium_large: null,
-                    full: {
-                        url: media.source_url,
+                    full: urlAndSize({
+                        source_url: media.source_url,
                         width: media_details.width,
-                    },
-                    always: {
-                        url: media.source_url,
+                    }, thumbnailOptions),
+                    always: urlAndSize({
+                        source_url: media.source_url,
                         width: media_details.width,
-                    }
+                    }, thumbnailOptions)
                 };
             }
 
@@ -76,7 +86,7 @@ export default function extractThumbnails(featuredMedia, post) {
                 details: details
             };
         } catch (e) {
-            throw `Couldn't parse thumbnails for slug ${post.slug}`
+            throw `Couldn't parse thumbnails`
         }
     });
     return result;

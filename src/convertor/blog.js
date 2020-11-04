@@ -1,10 +1,12 @@
 
 import extractPosts from './posts'
 import extractPopularPosts from './popularPosts'
+import { config } from '../../config'
 
-export default function extractBlog (input, contentOptions, metaOptions, authorNameLinkMappings, baseUrl) {
-    let simplifiedPosts = extractPosts(input.posts, true, contentOptions, metaOptions, authorNameLinkMappings, baseUrl)
-    let simplifiedPages = extractPosts(input.pages, false, contentOptions, metaOptions, authorNameLinkMappings, baseUrl)
+export default function extractBlog (input, website) {
+    let options = config(website)
+    let simplifiedPosts = extractPosts(input.posts, true, options)
+    let simplifiedPages = extractPosts(input.pages, false, options)
     let simplifiedPopularPosts = extractPopularPosts(input.popularPosts)
 
     let simpliedPostAndPages = simplifiedPosts.concat(simplifiedPages)

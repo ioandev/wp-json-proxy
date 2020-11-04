@@ -1,7 +1,7 @@
 import extractPost from './post'
 
-export default function extractPosts(data, isPost, contentOptions, metaOptions, authorNameLinkMappings, baseUrl) {
+export default function extractPosts(data, isPost, options) {
     return data.map(post => {
-        return extractPost(post, isPost, contentOptions, metaOptions, authorNameLinkMappings, baseUrl);
+        return extractPost(post, isPost, options);
     })
 }

@@ -1,17 +1,18 @@
 import { extractTitle, extractThumbnails, extractContentAsJson, extractContentAsText , extractLink, extractAuthors, extractMeta, extractReadingTime, extractExcerpt, extractDates } from '../blocks'
 var wordcount = require('wordcount');
 
-export default function extractPost(post, isPost, contentOptions, metaOptions, authorNameLinkMappings, baseUrl) {
+export default function extractPost(post, isPost, options) {
+    let { contentOptions, metaOptions, authorNameLinkMappings, baseUrl, thumbnailOptions } = options
     var featuredMedia = post._embedded['wp:featuredmedia'];
     var authors = post._embedded['author'];
 
     let thumbnails = [];
     if (featuredMedia) {
         try{
-            thumbnails = extractThumbnails(featuredMedia, post);
+            thumbnails = extractThumbnails(featuredMedia, thumbnailOptions);
         }
         catch(ex) {
-            console.error(`Error while parsing thumbnails: ${ex}`)
+            console.error(`Error while parsing thumbnails for post ${post.slug}: ${ex}`)
         }
     }
     
